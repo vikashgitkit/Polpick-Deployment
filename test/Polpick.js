@@ -6,10 +6,10 @@ describe("PolPick Contract", function () {
     const [owner, addr1, addr2] = await ethers.getSigners();
     const PolPick = await ethers.getContractFactory("PolPick");
     const polPick = await PolPick.deploy(owner.address);
-
+    
     await polPick.waitForDeployment();
-    console.log("Contract address:", polPick)
 
+    console.log("PolPick contract deployed at:", polPick.target); // This will log the contract address
     return { polPick, owner, addr1, addr2 };
   }
 
@@ -40,7 +40,6 @@ describe("PolPick Contract", function () {
     it("Should create a pool", async function () {
       const { polPick } = await loadFixture(deployPolPickFixture);
       const poolId = ethers.utils.formatBytes32String("pool1");
-      console.log("PoolId is:", poolId)
       await polPick.createPool(poolId, 100, 1000, 10);
       const pool = await polPick.pools(poolId);
       expect(pool.created).to.equal(true);
