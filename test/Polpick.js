@@ -62,12 +62,16 @@ describe("PolPick Contract", function () {
       const pool = await polPick.pools(poolId);
       
       expect(pool.created).to.equal(true);
+      expect(pool.minBetAmount).to.equal(100);
+      expect(pool.maxBetAmount).to.equal(1000);
+      expect(pool.poolBetsLimit).to.equal(10);
     });
 
     it("Should return true for an open pool", async function () {
-      const { polPick } = await loadFixture(deployPolPickFixture);
-      const poolId = ethers.utils.formatBytes32String("pool2");
-      await polPick.createPool(poolId, 100, 1000, 10);
+      const { polPick, owner } = await loadFixture(deployPolPickFixture);
+      const poolId = hexlify(toUtf8Bytes("pool2"));
+      console.log("🚀 ~ poolId:", poolId)
+      await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
       expect(await polPick.isPoolOpen(poolId)).to.equal(true);
     });
 
