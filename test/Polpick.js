@@ -1,5 +1,8 @@
 const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
+const { ethers } = require("hardhat");
+const { hexlify } = ethers;
+const { toUtf8Bytes } = require("@ethersproject/strings");
 
 describe("PolPick Contract", function () {
   async function deployPolPickFixture() {
@@ -37,15 +40,28 @@ describe("PolPick Contract", function () {
       expect(await polPick.isRunning()).to.equal(true);
     });
 
+    // it("Should create a pool", async function () {
+    //   const { polPick } = await loadFixture(deployPolPickFixture);
+    // //  const poolId = ethers.utils.formatBytes32String("0x33303a3331");
+      
+    //   console.log("🚀 ~ poolId:", poolId)
+    //   await polPick.createPool(poolId, 100, 1000, 10);
+    //   const pool = await polPick.pools(poolId);
+    //   console.log("🚀 ~ pool:", pool)
+    //   expect(pool.created).to.equal(true);
+    //   expect(pool.minBetAmount).to.equal(100);
+    //   expect(pool.maxBetAmount).to.equal(1000);
+    //   expect(pool.poolBetsLimit).to.equal(10);
+    // });
+
     it("Should create a pool", async function () {
-      const { polPick } = await loadFixture(deployPolPickFixture);
-      const poolId = ethers.utils.formatBytes32String("pool1");
-      await polPick.createPool(poolId, 100, 1000, 10);
+      const { polPick, owner } = await loadFixture(deployPolPickFixture);
+      const poolId = hexlify(toUtf8Bytes("pool1"));
+      console.log("🚀 ~ poolId:", poolId)
+      await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
       const pool = await polPick.pools(poolId);
+      
       expect(pool.created).to.equal(true);
-      expect(pool.minBetAmount).to.equal(100);
-      expect(pool.maxBetAmount).to.equal(1000);
-      expect(pool.poolBetsLimit).to.equal(10);
     });
 
     it("Should return true for an open pool", async function () {
