@@ -64,10 +64,8 @@ describe("PolPick Contract", function () {
 
     it("Should revert if a non-gameController tries to create a pool", async function () {
       const { polPick, addr1 } = await loadFixture(deployPolPickFixture);
-      const poolId = ethers.utils.formatBytes32String("pool3");
-      await expect(
-        polPick.connect(addr1).createPool(poolId, 100, 1000, 10)
-      ).to.be.revertedWith("Only game controller can do this");
+      const poolId = hexlify(toUtf8Bytes("pool1"));
+      await expect(polPick.connect(addr1).createPool(poolId, 100, 1000, 10)).to.be.revertedWith("Only game controller can do this");
     });
   });
 });
