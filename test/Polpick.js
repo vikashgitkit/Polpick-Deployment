@@ -40,6 +40,11 @@ describe("PolPick Contract", function () {
       expect(await polPick.isRunning()).to.equal(true);
     });
 
+    it("Should initialize the game as running", async function () {
+      const { polPick } = await loadFixture(deployPolPickFixture);
+      expect(await polPick.isRunning()).to.equal(true);
+    });
+
 
     it("Should create a pool", async function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
