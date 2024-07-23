@@ -72,8 +72,8 @@ describe("PolPick Contract", function () {
     it("Should trigger a round start", async function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool6"));
-      const timeMS = 1625077769000;
-      const price = 100;
+      const timeMS = 1721744443;
+      const price = 62667;
       const batchSize = 10;
 
       await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
