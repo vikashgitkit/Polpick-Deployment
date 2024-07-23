@@ -54,7 +54,7 @@ describe("PolPick Contract", function () {
       expect(pool.poolBetsLimit).to.equal(10);
     });
 
-    it("Should return true if pool is open", async function () {
+    it("Should return true for an open pool", async function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool2"));
       console.log("🚀 ~ poolId:", poolId)
