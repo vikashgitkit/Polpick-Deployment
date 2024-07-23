@@ -35,13 +35,8 @@ describe("PolPick Contract", function () {
 
   describe("Game Functions", function () {
     it("Should start the game", async function () {
-      const { polPick } = await loadFixture(deployPolPickFixture);
-      await polPick.startGame();
-      expect(await polPick.isRunning()).to.equal(true);
-    });
-
-    it("Should initialize the game as running", async function () {
-      const { polPick } = await loadFixture(deployPolPickFixture);
+      const { polPick, owner } = await loadFixture(deployPolPickFixture);
+      await polPick.connect(owner).startGame();
       expect(await polPick.isRunning()).to.equal(true);
     });
 
@@ -71,6 +66,24 @@ describe("PolPick Contract", function () {
       const { polPick, addr1 } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool1"));
       await expect(polPick.connect(addr1).createPool(poolId, 100, 1000, 10)).to.be.revertedWith("Only game controller can do this");
+    });
+
+
+    it("Should trigger a round start", async function () {
+      const { polPick, owner } = await loadFixture(deployPolPickFixture);
+      const poolId = hexlify(toUtf8Bytes("pool6"));
+      const timeMS = 1625077769000;
+      const price = 100;
+      const batchSize = 10;
+
+      await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
+      await polPick.connect(owner).startGame();
+
+      await polPick.connect(owner).trigger(poolId, timeMS, price, batchSize);
+
+      const pool = await polPick.pools(poolId);
+      expect(pool.startPrice).to.equal(price);
+      expect(pool.roundStartTime).to.equal(timeMS);
     });
   });
 });
