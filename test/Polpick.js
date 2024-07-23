@@ -33,7 +33,7 @@ describe("PolPick Contract", function () {
     });
   });
 
-  describe("Game Functions", function () {
+  describe("Polpick Game Functions", function () {
     it("Should start the game", async function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
       await polPick.connect(owner).startGame();
