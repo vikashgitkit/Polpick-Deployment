@@ -12,7 +12,7 @@ describe("PolPick Contract", function () {
     
     await polPick.waitForDeployment();
 
-    console.log("PolPick contract deployed at:", polPick.target); // This will log the contract address
+    console.log("PolPick contract deployed at address:", polPick.target); // This will log the contract address
     return { polPick, owner, addr1, addr2 };
   }
 
