@@ -72,7 +72,10 @@ describe("PolPick Contract", function () {
     it("Should revert if a non-gameController address tries to create a pool", async function () {
       const { polPick, addr1 } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool1"));
-      await expect(polPick.connect(addr1).createPool(poolId, 100, 1000, 10)).to.be.revertedWith("Only game controller can do this");
+      const minBetAmount = parseUnits("0.1"); // 0.1 ETH
+      const maxBetAmount = parseUnits("1.0"); // 1 ETH
+      const poolBetsLimit = 10;
+      await expect(polPick.connect(addr1).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit)).to.be.revertedWith("Only game controller can do this");
     });
 
 
