@@ -83,7 +83,10 @@ describe("PolPick Contract", function () {
       it("Should make a trade successfully", async function () {
         const { polPick, owner, addr1 } = await loadFixture(deployPolPickFixture);
         const poolId = hexlify(toUtf8Bytes("pool9"));
-        await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
+        const minBetAmount = parseUnits("0.1"); // 0.1 ETH
+        const maxBetAmount = parseUnits("1.0"); // 1 ETH
+        const poolBetsLimit = 10;
+        await polPick.connect(owner).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit);
         await polPick.connect(owner).startGame();
 
         await polPick.connect(addr1).makeTrade({
@@ -93,10 +96,10 @@ describe("PolPick Contract", function () {
           upOrDown: true,
           whiteLabelId: "WL123",
           gameId: "GAME123"
-        }, { value: parseEther("0.2") });
+        }, { value: parseUnits("0.2") });
 
         const pool = await polPick.pools(poolId);
-        expect(pool.upBetGroup.total).to.equal(parseEther("0.2"));
+        expect(pool.upBetGroup.total).to.equal(parseUnits("0.2"));
       });
     });
 
@@ -108,7 +111,11 @@ describe("PolPick Contract", function () {
       const price = 62667;
       const batchSize = 10;
 
-      await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
+      const minBetAmount = parseUnits("0.1"); // 0.1 ETH
+      const maxBetAmount = parseUnits("1.0"); // 1 ETH
+      const poolBetsLimit = 10;
+
+      await polPick.connect(owner).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit);
       await polPick.connect(owner).startGame();
 
       await polPick.connect(owner).trigger(poolId, timeMS, price, batchSize);
