@@ -40,20 +40,6 @@ describe("PolPick Contract", function () {
       expect(await polPick.isRunning()).to.equal(true);
     });
 
-
-    // it("Should create a pool", async function () {
-    //   const { polPick, owner } = await loadFixture(deployPolPickFixture);
-    //   const poolId = hexlify(toUtf8Bytes("pool1"));
-    //   console.log("🚀 ~ poolId:", poolId)
-    //   await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
-    //   const pool = await polPick.pools(poolId);
-      
-    //   expect(pool.created).to.equal(true);
-    //   expect(pool.minBetAmount).to.equal(100);
-    //   expect(pool.maxBetAmount).to.equal(1000);
-    //   expect(pool.poolBetsLimit).to.equal(10);
-    // });
-
     it("Should create a pool with minimum and maximum bet amounts in ETH", async function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool1"));
@@ -75,7 +61,11 @@ describe("PolPick Contract", function () {
       const { polPick, owner } = await loadFixture(deployPolPickFixture);
       const poolId = hexlify(toUtf8Bytes("pool2"));
       console.log("🚀 ~ poolId:", poolId)
-      await polPick.connect(owner).createPool(poolId, 100, 1000, 10);
+      const minBetAmount = parseUnits("0.1"); // 0.1 ETH
+      const maxBetAmount = parseUnits("1.0"); // 1 ETH
+      const poolBetsLimit = 10;
+      
+      await polPick.connect(owner).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit);
       expect(await polPick.isPoolOpen(poolId)).to.equal(true);
     });
 
