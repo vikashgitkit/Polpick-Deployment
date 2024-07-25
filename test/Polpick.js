@@ -94,7 +94,7 @@ describe("PolPick Contract", function () {
           avatarUrl: "https://example.com/avatar1.png",
           countryCode: "US",
           upOrDown: true,
-          whiteLabelId: "WL123",
+          whiteLabelId: "WL12",
           gameId: "GAME123"
         }, { value: parseUnits("0.2") });
 
