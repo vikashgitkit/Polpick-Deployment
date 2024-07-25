@@ -75,7 +75,7 @@ describe("PolPick Contract", function () {
       const minBetAmount = parseUnits("0.1"); // 0.1 ETH
       const maxBetAmount = parseUnits("1.0"); // 1 ETH
       const poolBetsLimit = 10;
-      await expect(polPick.connect(addr1).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit)).to.be.revertedWith("Only game controller can do this");
+      await expect(polPick.connect(addr1).createPool(poolId, minBetAmount, maxBetAmount, poolBetsLimit)).to.be.revertedWith("Only game controller can create pool");
     });
 
 
